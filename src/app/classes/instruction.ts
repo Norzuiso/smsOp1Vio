@@ -4,4 +4,5 @@ export class Instruction {
   OpeResult: number = 0
   EstimatedTime: number = 0
   ID: string = ""
+  Lote: number = 0;
 }

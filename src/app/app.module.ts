@@ -15,7 +15,7 @@ import {FormsModule, ReactiveFormsModule} from "@angular/forms";
 import {MatSliderModule} from "@angular/material/slider";
 import { EstimatedTimeSelectionComponent } from './components/data-dialog/estimated-time-selection/estimated-time-selection.component';
 import {MatSelectModule} from "@angular/material/select";
-import { ProcessInstrucctionsComponent } from './components/process-instrucctions/process-instrucctions.component';
+import { ProcessInstructionsComponent } from './components/process-instrucctions/process-instructions.component';
 
 @NgModule({
   declarations: [
@@ -23,7 +23,7 @@ import { ProcessInstrucctionsComponent } from './components/process-instrucction
     TimerComponent,
     FormComponent,
     DataDialogComponent,
-    ProcessInstrucctionsComponent
+    ProcessInstructionsComponent
   ],
   imports: [
     BrowserModule,

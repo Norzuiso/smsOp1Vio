@@ -14,6 +14,6 @@
           *ngIf="canWeStartProcess"
           type="button" class="btn btn-outline-primary">Procesar instrucciones
   </button>
-  <app-process-instrucctions></app-process-instrucctions>
+  <app-process-instrucctions *ngIf="canWeStartProcess && startedProcessInstructions"></app-process-instrucctions>
 
 </div>
