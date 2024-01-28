@@ -1,7 +1,16 @@
 <div class="container mt-4">
-  <button (click)="this.startedProgram = !this.startedProgram" type="button" class="btn btn-outline-primary">Iniciar programa</button>
+  <button (click)="this.startedProgram = !this.startedProgram"
+          type="button"
+          class="btn btn-outline-primary">{{ startedProgram ? "Detener programa" : "Iniciar programa" }}
+  </button>
   <app-timer *ngIf="startedProgram"></app-timer>
-  <app-form *ngIf="startedProgram"></app-form>
-  <button (click)="this.startedProgram = !this.startedProgram" type="button" class="btn btn-outline-primary">Procesar información</button>
+  <app-form *ngIf="startedProgram && startedProcessInstructions"
+    (canWeStartProcessBooleanEventEmitter)="checkQueue($event)"
+  ></app-form>
+  <button (click)="this.startedProcessInstructions = !this.startedProcessInstructions"
+          *ngIf="canWeStartProcess"
+          type="button" class="btn btn-outline-primary">Procesar información
+  </button>
+
 
 </div>
