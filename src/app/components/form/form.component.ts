@@ -35,7 +35,6 @@ export class FormComponent implements OnInit {
       width: '80%',
     });
     dialogRef.afterOpened().subscribe(() => {
-      // Obtén el botón de registro y establece el foco
       const registerButton = document.getElementById('registerBtnDataDialog') as HTMLButtonElement;
       if (registerButton) {
         console.log("")

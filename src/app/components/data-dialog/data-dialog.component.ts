@@ -61,6 +61,7 @@ export class DataDialogComponent implements OnInit {
       this.formGroup.reset()
       return
     }
+
     let isModOrDiv = this.operand == "%" || this.operand=="/";
     let isNumAOrNumBZero = this.numA==0 || this.numB == 0;
     if (isModOrDiv && isNumAOrNumBZero) {
@@ -69,12 +70,13 @@ export class DataDialogComponent implements OnInit {
       this.formGroup.get("numB")?.reset()
       return
     }
-    this.ins.ID = this.formGroup.getRawValue()["id"]
-    this.ins.Ope = this.formGroup.getRawValue()["ope"]
-    this.ins.Name = this.formGroup.getRawValue()["name"]
-    this.ins.EstimatedTime = this.formGroup.getRawValue()["time"]
 
-    if (!this.dataService.addId(this.ins.ID)) {
+    this.fillInstrucction();
+    this.ins.Ope = this.createOperations()
+    this.ins.OpeResult = this.calculateOpeResult()
+
+    let isDataIdUniqueAndAdded = this.dataService.addId(this.ins.ID);
+    if (!isDataIdUniqueAndAdded) {
       alert("El id igresado no es unico")
       this.formGroup.get("id")?.reset()
       return
@@ -83,5 +85,31 @@ export class DataDialogComponent implements OnInit {
     this.dataService.enqueue(this.ins)
     alert("Instrucción registrada correctamente")
     this.formGroup.reset()
+  }
+
+  private fillInstrucction() {
+    this.ins.ID = this.formGroup.getRawValue()["id"]
+    this.ins.Name = this.formGroup.getRawValue()["name"]
+    this.ins.EstimatedTime = this.formGroup.getRawValue()["time"]
+  }
+
+  private createOperations() {
+    return this.numA + this.operand + this.numB
+  }
+
+  private calculateOpeResult() {
+    switch (this.operand) {
+      case "+":
+        return this.numA + this.numB
+      case "-":
+        return this.numA - this.numB
+      case "*":
+        return this.numA * this.numB
+      case "/":
+        return this.numA / this.numB
+      case"%":
+        return this.numA % this.numB
+    }
+    return 0;
   }
 }
