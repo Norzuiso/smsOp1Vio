@@ -62,13 +62,21 @@ export class DataDialogComponent implements OnInit {
       return
     }
 
+    this.numA = this.formGroup.get("numA")?.getRawValue()
+    this.numB = this.formGroup.get("numB")?.getRawValue()
+
     let isModOrDiv = this.operand == "%" || this.operand=="/";
-    let isNumAOrNumBZero = this.numA==0 || this.numB == 0;
-    if (isModOrDiv && isNumAOrNumBZero) {
-      alert("Operación invalida, en division o residuo los valores no pueden ser 0")
-      this.formGroup.get("numA")?.reset()
-      this.formGroup.get("numB")?.reset()
-      return
+    let isNumAOrNumBZero = this.numA===0 || this.numB === 0;
+    if (isModOrDiv) {
+      if( isNumAOrNumBZero){
+        alert("Operación invalida, en division o residuo los valores no pueden ser 0. NumA= "
+          + this.numA +
+          " NumB= "+ this.numB)
+        this.formGroup.get("numA")?.reset()
+        this.formGroup.get("numB")?.reset()
+        this.numA, this.numB = 0
+        return
+      }
     }
 
     this.fillInstrucction();
@@ -85,6 +93,7 @@ export class DataDialogComponent implements OnInit {
     this.dataService.enqueue(this.ins)
     alert("Instrucción registrada correctamente")
     this.formGroup.reset()
+    this.ins = new Instruction()
   }
 
   private fillInstrucction() {
