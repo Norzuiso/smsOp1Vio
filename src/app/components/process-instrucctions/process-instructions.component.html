@@ -1,3 +1,5 @@
+<app-timer [stopTime]="isTimeDone"></app-timer>
+<app-process-timer [tiempoInicial]="totalTime" (tiempoAgotado)="temporizadorAgotado($event)"></app-process-timer>
 <div class="container-fluid">
   <div class="row" id="headers">
     <div class="col-12">
@@ -17,8 +19,8 @@
         <tbody class="pt-3">
         <ng-container *ngFor="let item of batchInProgress; let i = index">
           <tr *ngIf="!terminateProcess.includes(item)">
-            <td>{{ item.ID }}</td>
-            <td>{{ item.EstimatedTime }}</td>
+            <td *ngIf="processInProgress.ID != item.ID">{{ item.ID }}</td>
+            <td *ngIf="processInProgress.ID != item.ID">{{ item.EstimatedTime }}</td>
           </tr>
         </ng-container>
         </tbody>
@@ -29,6 +31,9 @@
     <div class="col-5">
       <div class="w-50 mx-auto">
         <span class="h4">Proceso en Ejecución</span>
+        <p class="h4">
+          Número de programa: {{ this.processInProgress.ID }}
+        </p>
         <p class="h5">
           Nombre: {{ this.processInProgress.Name }}
         </p>
@@ -37,9 +42,6 @@
         </p>
         <p class="h5">
           Tiempo máximo estimado: {{ this.processInProgress.EstimatedTime }}
-        </p>
-        <p class="h5">
-          Número de programa: {{ this.processInProgress.ID }}
         </p>
         <p class="h5">
           Tiempo transcurrido: {{ this.timerInProgress }}

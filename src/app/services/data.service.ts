@@ -14,7 +14,7 @@ export class DataService {
   }
   dummyInstructions(){
     this.instructionsQueue = [
-      {ID: "1", Name: "Juan", Ope: "1+1", EstimatedTime: 2, OpeResult: 1, Lote: 0},
+      {ID: "1", Name: "Juan", Ope: "1+1", EstimatedTime: 20, OpeResult: 1, Lote: 0},
       {ID: "2", Name: "Juan", Ope: "1-1", EstimatedTime: 2, OpeResult: 0, Lote: 0},
       {ID: "3", Name: "Juan", Ope: "1*1", EstimatedTime: 2, OpeResult: 1, Lote: 0},
       {ID: "4", Name: "Juan", Ope: "1/1", EstimatedTime: 2, OpeResult: 1, Lote: 0},
@@ -24,6 +24,7 @@ export class DataService {
       {ID: "8", Name: "Juan", Ope: "1%1", EstimatedTime: 2, OpeResult: 0, Lote: 0},
       {ID: "9", Name: "Juan", Ope: "1%1", EstimatedTime: 2, OpeResult: 0, Lote: 0}
     ];
+    this.totalTime = 34
   }
   dequeueGroup(size: number): Instruction[] {
     const group: Instruction[] = this.instructionsQueue.splice(0, size);

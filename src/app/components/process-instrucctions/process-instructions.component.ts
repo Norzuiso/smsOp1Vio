@@ -1,7 +1,6 @@
 import {Component, OnInit} from '@angular/core';
 import {DataService} from "../../services/data.service";
 import {Instruction} from "../../classes/instruction";
-import {delay, interval, Subscription} from "rxjs";
 
 @Component({
   selector: 'app-process-instrucctions',
@@ -10,11 +9,14 @@ import {delay, interval, Subscription} from "rxjs";
 })
 export class ProcessInstructionsComponent implements OnInit {
   instructionsGroups: Instruction[][] = []
+  totalTime: number = 1
+  isTimeDone: boolean = false
 
   constructor(public dataService: DataService) {
-   // dataService.dummyInstructions();
+    //dataService.dummyInstructions();
     this.groupInstructions();
     this.LotesPendientes = this.instructionsGroups.length
+    this.totalTime = this.dataService.getTotalTime()
   }
 
   private groupInstructions() {
@@ -31,20 +33,15 @@ export class ProcessInstructionsComponent implements OnInit {
 
   async ngOnInit(): Promise<void> {
     await this.startProcess();
-    // Aquí puedes continuar con el código después de que el contador haya terminado
-    console.log('Contador terminado, continuando con el código...');
   }
 
   batchInProgress: Instruction[] = []
   batchInProgressID: number = 0
 
-  processBatchInProgress: number = 0;
   processInProgress: Instruction = new Instruction()
   timerInProgress: number = 0
   timerRest: number = 0
 
-  valorActualizado: number = 0;
-  duracionSegundos: number = 10; // Cambia esto según la duración deseada
   intervalo: number = 1000; // Intervalo de actualización en milisegundos
 
 
@@ -87,4 +84,7 @@ export class ProcessInstructionsComponent implements OnInit {
     });
   }
 
+  temporizadorAgotado(evento: boolean) {
+    this.isTimeDone = evento
+  }
 }

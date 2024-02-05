@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, Input, OnInit} from '@angular/core';
 import {TimerService} from "../../services/timer.service";
 
 @Component({
@@ -7,14 +7,23 @@ import {TimerService} from "../../services/timer.service";
   styleUrls: ['./timer.component.css']
 })
 export class TimerComponent implements OnInit {
+  @Input() stopTime: boolean = false;
   public elapsedTime: number = 0;
+  private intervalId: any; // Variable para almacenar el ID del intervalo
 
   constructor(private timeService: TimerService) { }
 
   ngOnInit(): void {
-    setInterval(()=>{
-      this.elapsedTime = this.timeService.getElapsedTime()
-    }, 1000)
+    this.startTimer();
   }
 
+  startTimer() {
+    this.intervalId = setInterval(() => {
+      this.elapsedTime = this.timeService.getElapsedTime();
+    }, 1000);
+  }
+
+  stopTimer() {
+    clearInterval(this.intervalId); // Detener el temporizador usando el ID del intervalo
+  }
 }

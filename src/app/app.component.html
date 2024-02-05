@@ -3,9 +3,6 @@
           type="button"
           class="btn btn-outline-primary">{{ startedProgram ? "Detener programa" : "Iniciar programa" }}
   </button>
-  <app-timer
-    *ngIf="startedProgram"
-  ></app-timer>
   <app-form
     *ngIf="startedProgram && startedProcessInstructions"
     (canWeStartProcessBooleanEventEmitter)="checkQueue($event)"
