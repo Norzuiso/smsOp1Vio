@@ -11,10 +11,16 @@ export class TimerComponent implements OnInit {
   public elapsedTime: number = 0;
   private intervalId: any; // Variable para almacenar el ID del intervalo
 
-  constructor(private timeService: TimerService) { }
+  constructor(private timeService: TimerService, private timerControlService: TimerService) { }
 
   ngOnInit(): void {
-    this.startTimer();
+    this.timerControlService.stopTimer$.subscribe(stop => {
+      if (stop) {
+        this.stopTimer();
+      } else {
+        this.startTimer();
+      }
+    });
   }
 
   startTimer() {
@@ -24,6 +30,6 @@ export class TimerComponent implements OnInit {
   }
 
   stopTimer() {
-    clearInterval(this.intervalId); // Detener el temporizador usando el ID del intervalo
+    clearInterval(this.intervalId);
   }
 }

@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { DataDialogComponent } from './data-dialog.component';
+import { JobInProgressComponent } from './job-in-progress.component';
 
-describe('DataDialogComponent', () => {
-  let component: DataDialogComponent;
-  let fixture: ComponentFixture<DataDialogComponent>;
+describe('JobInProgressComponent', () => {
+  let component: JobInProgressComponent;
+  let fixture: ComponentFixture<JobInProgressComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ DataDialogComponent ]
+      declarations: [ JobInProgressComponent ]
     })
     .compileComponents();
 
-    fixture = TestBed.createComponent(DataDialogComponent);
+    fixture = TestBed.createComponent(JobInProgressComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

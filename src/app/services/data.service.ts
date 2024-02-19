@@ -1,61 +1,61 @@
-import { Injectable } from '@angular/core';
-import {Instruction} from "../classes/instruction";
+import {Injectable} from '@angular/core';
+import {Job} from "../classes/job";
+import {Utils} from "../utils/Utils";
 
 @Injectable({
   providedIn: 'root'
 })
 export class DataService {
-  private uniqueId: Set<string> = new Set()
-  private instructionsQueue: Instruction[] = []
+
+  private jobBatchInProgress: Job[] = []
+
+  private instructionsQueue: Job[] = []
+
   private totalTime: number = 0
 
-  getTotalTime(): number{
+  private utils: Utils = new Utils()
+
+  getTotalTime(): number {
     return this.totalTime
   }
-  dummyInstructions(){
-    this.instructionsQueue = [
-      {ID: "1", Name: "Juan", Ope: "1+1", EstimatedTime: 20, OpeResult: 1, Lote: 0},
-      {ID: "2", Name: "Juan", Ope: "1-1", EstimatedTime: 2, OpeResult: 0, Lote: 0},
-      {ID: "3", Name: "Juan", Ope: "1*1", EstimatedTime: 2, OpeResult: 1, Lote: 0},
-      {ID: "4", Name: "Juan", Ope: "1/1", EstimatedTime: 2, OpeResult: 1, Lote: 0},
-      {ID: "5", Name: "Juan", Ope: "1%1", EstimatedTime: 2, OpeResult: 0, Lote: 0},
-      {ID: "6", Name: "Juan", Ope: "1*1", EstimatedTime: 2, OpeResult: 1, Lote: 0},
-      {ID: "7", Name: "Juan", Ope: "1/1", EstimatedTime: 2, OpeResult: 1, Lote: 0},
-      {ID: "8", Name: "Juan", Ope: "1%1", EstimatedTime: 2, OpeResult: 0, Lote: 0},
-      {ID: "9", Name: "Juan", Ope: "1%1", EstimatedTime: 2, OpeResult: 0, Lote: 0}
-    ];
-    this.totalTime = 34
+
+  createJobs(quantity: number): Job[] {
+    let job: Job = {TimeInProgress: 0, ElapsedTime: 0, EstimatedTime: 0, ID: "", Lote: 0, Ope: "", OpeResult: "0"}
+    let fullOperation: any = {};
+    for (let i = 0; i != quantity; i++) {
+      job.ID = String(i)
+
+      job.EstimatedTime = this.utils.generateEstimatedTime()
+      this.totalTime += job.EstimatedTime
+
+      fullOperation = this.utils.generateJobFullOperation()
+      job.Ope = fullOperation?.ope
+      job.OpeResult = fullOperation?.result
+
+      this.enqueue(job)
+      job = {TimeInProgress: 0, ElapsedTime: 0, EstimatedTime: 0, ID: "", Lote: 0, Ope: "", OpeResult: "0"}
+    }
+
+    return this.getQueue()
   }
-  dequeueGroup(size: number): Instruction[] {
-    const group: Instruction[] = this.instructionsQueue.splice(0, size);
-    return group;
-  }
-  enqueue(item: Instruction): void {
+
+
+  enqueue(item: Job): void {
     this.totalTime += item.EstimatedTime
     this.instructionsQueue.push(item)
   }
-  dequeue(): Instruction | undefined{
+
+  dequeue(): Job | undefined {
     let shift = this.instructionsQueue.shift();
-    this.totalTime -= shift!= undefined ? shift.EstimatedTime : 0;
+    this.totalTime -= shift != undefined ? shift.EstimatedTime : 0;
     return shift;
   }
 
-  getQueue(): Instruction[]{
+  getQueue(): Job[] {
     return this.instructionsQueue.slice();
   }
 
-  addId(id: string): boolean{
-    if (this.uniqueId.has(id)){
-      return false;
-    }else{
-      this.uniqueId.add(id)
-      return true;
-    }
+  constructor() {
   }
 
-  getAllId(): string[]{
-    return Array.from(this.uniqueId);
-  }
-
-  constructor() { }
 }

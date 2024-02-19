@@ -1,0 +1,20 @@
+<div class="container-fluid">
+  <div class="mx-auto">
+    <span class="h4">Proceso en Ejecución</span>
+    <p class="h4">
+      Número de programa: {{ this.jobInProgressService.jobInProgress.ID }}
+    </p>
+    <p class="h5">
+      Operación: {{ this.jobInProgressService.jobInProgress.Ope }}
+    </p>
+    <p class="h5">
+      Tiempo máximo estimado: {{ this.jobInProgressService.jobInProgress.EstimatedTime }}
+    </p>
+    <p class="h5">
+      Tiempo transcurrido: {{ this.jobInProgressService.jobInProgress.TimeInProgress }}
+    </p>
+    <p class="h5">
+      Tiempo restante por ejecutar: {{ this.jobInProgressService.timerRest }}
+    </p>
+  </div>
+</div>

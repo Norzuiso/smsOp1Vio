@@ -1,7 +1,7 @@
-import { Instruction } from './instruction';
+import { Job } from './job';
 
 describe('Process', () => {
   it('should create an instance', () => {
-    expect(new Instruction()).toBeTruthy();
+    expect(new Job()).toBeTruthy();
   });
 });

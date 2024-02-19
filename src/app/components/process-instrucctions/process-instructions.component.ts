@@ -1,6 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {DataService} from "../../services/data.service";
-import {Instruction} from "../../classes/instruction";
+import {Job} from "../../classes/job";
+import {BatchInProgressService} from "../../services/batchInProgress/batch-in-progress.service";
 
 @Component({
   selector: 'app-process-instrucctions',
@@ -8,44 +9,34 @@ import {Instruction} from "../../classes/instruction";
   styleUrls: ['./process-instructions.component.css']
 })
 export class ProcessInstructionsComponent implements OnInit {
-  instructionsGroups: Instruction[][] = []
+  instructionsGroups: Job[][] = []
   totalTime: number = 1
   isTimeDone: boolean = false
 
-  constructor(public dataService: DataService) {
-    //dataService.dummyInstructions();
-    this.groupInstructions();
+  constructor(public dataService: DataService,
+              public batchInProgressService: BatchInProgressService) {
+    this.batchInProgressService.createBatchJobs(dataService.getQueue());
+
     this.LotesPendientes = this.instructionsGroups.length
     this.totalTime = this.dataService.getTotalTime()
   }
 
-  private groupInstructions() {
-    const totalValues = this.dataService.getQueue().length;
-    const groupSize = 4;
-
-    for (let i = 0; i < totalValues; i += groupSize) {
-      const group = this.dataService.dequeueGroup(groupSize);
-      if (group.length > 0) {
-        this.instructionsGroups.push(group);
-      }
-    }
-  }
 
   async ngOnInit(): Promise<void> {
     await this.startProcess();
   }
 
-  batchInProgress: Instruction[] = []
+  batchInProgress: Job[] = []
   batchInProgressID: number = 0
 
-  processInProgress: Instruction = new Instruction()
+  processInProgress: Job = new Job()
   timerInProgress: number = 0
   timerRest: number = 0
 
   intervalo: number = 1000; // Intervalo de actualización en milisegundos
 
 
-  terminateProcess: Instruction[] = []
+  terminateProcess: Job[] = []
   LotesPendientes = 0
 
   async startProcess() {
@@ -54,20 +45,20 @@ export class ProcessInstructionsComponent implements OnInit {
       index++;
       this.batchInProgressID = index
       this.batchInProgress = value
-      for(const ins of value){
+      for (const ins of value) {
         ins.Lote = index
         await this.iniciarContador(ins)
         this.terminateProcess.unshift(ins)
       }
       this.LotesPendientes--
     }
-    this.processInProgress = new Instruction()
+    this.processInProgress = new Job()
     this.batchInProgress = []
     this.batchInProgressID = 0
   }
 
 
-  private iniciarContador(ins: Instruction): Promise<void> {
+  private iniciarContador(ins: Job): Promise<void> {
     return new Promise<void>((resolve) => {
       let contador = 0;
       const contadorInterval = setInterval(() => {

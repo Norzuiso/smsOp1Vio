@@ -1,8 +1,7 @@
 import {Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {FormControl, FormGroup, Validators} from "@angular/forms";
-import {Instruction} from "../../classes/instruction";
+import {Job} from "../../classes/job";
 import {MatDialog} from "@angular/material/dialog";
-import {DataDialogComponent} from "../data-dialog/data-dialog.component";
 import {DataService} from "../../services/data.service";
 
 @Component({
@@ -13,11 +12,11 @@ import {DataService} from "../../services/data.service";
 export class FormComponent implements OnInit {
   @Output()
   canWeStartProcessBooleanEventEmitter= new EventEmitter<boolean>();
+  jobsQuantity = 1
 
-  instruction: Instruction = new Instruction()
+  instruction: Job = new Job()
   formGroup: FormGroup = new FormGroup({
-    id: new FormControl(this.instruction.Name),
-    name: new FormControl(this.instruction.Name, [
+    jobsQuantityFormControl: new FormControl(this.jobsQuantity, [
       Validators.required
     ]),
 
@@ -29,24 +28,18 @@ export class FormComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  openInstructionDialog() {
-    let dialogRef = this.dialog.open(DataDialogComponent, {
-      height: '80%',
-      width: '80%',
-    });
-    dialogRef.afterOpened().subscribe(() => {
-      const registerButton = document.getElementById('registerBtnDataDialog') as HTMLButtonElement;
-      if (registerButton) {
-        console.log("")
-        registerButton.focus();
-      }
-    });
-    dialogRef.afterClosed().subscribe(()=>{
-      this.canWeStartProcessBooleanEventEmitter.emit(this.checkQueue())
-    })
-  }
 
   checkQueue() {
     return this.dataService.getQueue()?.length !=0
+  }
+
+  generateJobs() {
+    this.jobsQuantity = this.formGroup.getRawValue()["jobsQuantityFormControl"]
+    if (this.jobsQuantity <= 0){
+      alert("Cantidad de trabajos invalida. Tiene que ser mayor a 0")
+    }else{
+      this.dataService.createJobs(this.jobsQuantity)
+      this.canWeStartProcessBooleanEventEmitter.emit(this.checkQueue())
+    }
   }
 }

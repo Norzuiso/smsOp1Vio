@@ -1,0 +1,25 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <span class="h3">Procesos terminados</span>
+    </div>
+  </div>
+</div>
+<table class="table">
+  <thead>
+  <tr>
+    <th scope="col">Lote</th>
+    <th scope="col">N. Programa</th>
+    <th scope="col">T.M</th>
+    <th scope="col">T.T</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let job of this.finishJobs.getFinishJobs()">
+    <td>{{job.Lote}}</td>
+    <td>{{job.ID}}</td>
+    <td>{{ job.Ope }}</td>
+    <td>{{ job.OpeResult }}</td>
+  </tr>
+  </tbody>
+</table>

@@ -1,8 +1,18 @@
-<div class="row pt-5">
-  <div class="col-3">
-    <h1>Registrar nueva instrucción</h1>
+<form [formGroup]="formGroup">
+  <div class="row pt-5">
+    <div class="col-3">
+      <h1>Número de trabajos</h1>
+    </div>
+    <div class="col-6">
+      <mat-form-field  class="w-100">
+        <mat-label>N. Trabajos</mat-label>
+        <input matInput
+               formControlName="jobsQuantityFormControl">
+      </mat-form-field>
+    </div>
+    <div class="col-3">
+      <button (click)="generateJobs()" class="btn btn-outline-dark ">Generar</button>
+    </div>
   </div>
-  <div class="col-9">
-    <button (click)="openInstructionDialog()" class="btn btn-primary">PICALE AQUÍ</button>
-  </div>
-</div>
+</form>
+

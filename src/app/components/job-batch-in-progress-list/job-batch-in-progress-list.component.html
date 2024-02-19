@@ -1,0 +1,29 @@
+<div class="container-fluid">
+  <div class="row">
+    <div class="col">
+      <span class="h3">Lote en proceso: {{ this.jobInQueue.getBatchID() }}</span>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col">
+      <span class="h3">Tiempo restante: {{ this.jobInQueue.getTotalTime() }}</span>
+    </div>
+  </div>
+</div>
+
+<table class="table">
+  <thead>
+  <tr>
+    <th scope="col">N. Programa</th>
+    <th scope="col">T.M</th>
+    <th scope="col">T.T</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr *ngFor="let job of this.jobInQueue.getQueue()">
+    <td>{{ job.ID }}</td>
+    <td>{{ job.EstimatedTime }}</td>
+    <td>{{ job.ElapsedTime }}</td>
+  </tr>
+  </tbody>
+</table>
