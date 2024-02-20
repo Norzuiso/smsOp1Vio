@@ -30,6 +30,9 @@ export class AppComponent {
     this.timerService.startTimer()
     await this.processJobsService.startProcess()
     this.timerService.stopTimer()
+    if (this.dataService.getQueue().length==0){
+      this.insStatusService.terminatedProcess = false
+    }
   }
 
   checkQueue(canWeStart: boolean) {

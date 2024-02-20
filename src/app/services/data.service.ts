@@ -20,7 +20,9 @@ export class DataService {
   }
 
   createJobs(quantity: number): Job[] {
-    let job: Job = {TimeInProgress: 0, ElapsedTime: 0, EstimatedTime: 0, ID: "", Lote: 0, Ope: "", OpeResult: "0"}
+    let job: Job = {
+      timerRest: 0,
+      TimeInProgress: 0, ElapsedTime: 0, EstimatedTime: 0, ID: "", Lote: 0, Ope: "", OpeResult: "0"}
     let fullOperation: any = {};
     for (let i = 0; i != quantity; i++) {
       job.ID = String(i)
@@ -33,7 +35,7 @@ export class DataService {
       job.OpeResult = fullOperation?.result
 
       this.enqueue(job)
-      job = {TimeInProgress: 0, ElapsedTime: 0, EstimatedTime: 0, ID: "", Lote: 0, Ope: "", OpeResult: "0"}
+      job = {timerRest: 0, TimeInProgress: 0, ElapsedTime: 0, EstimatedTime: 0, ID: "", Lote: 0, Ope: "", OpeResult: "0"}
     }
 
     return this.getQueue()

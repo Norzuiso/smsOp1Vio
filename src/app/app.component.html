@@ -6,30 +6,34 @@
           *ngIf="canWeStartProcess"
           type="button" class="btn btn-outline-primary">Procesar instrucciones
   </button>
-  <h3>Lotes pendientes: {{ batchInProgressService.getJobsBatch().length }}</h3>
 
-  <app-timer [stopTime]="canWeStartProcess"></app-timer>
+  <div *ngIf="canWeStartProcess">
 
-  <div class="row" *ngIf="this.insStatusService.isProgramFinish()">
-    <span class="h1">No hay procesos restantes</span>
 
+    <h3>Lotes pendientes: {{ batchInProgressService.getJobsBatch().length }}</h3>
+
+    <app-timer [stopTime]="canWeStartProcess"></app-timer>
+
+    <div class="row" *ngIf="this.insStatusService.isProgramFinish()">
+      <span class="h1">No hay procesos restantes</span>
+
+    </div>
+
+    <div class="row">
+      <div class="col" *ngIf="!this.insStatusService.isProgramFinish()">
+        <app-job-batch-in-progress-list *ngIf="!startedProcessInstructions">
+        </app-job-batch-in-progress-list>
+      </div>
+      <div class="col-4" *ngIf="!this.insStatusService.isProgramFinish()">
+        <app-job-in-progress *ngIf="!startedProcessInstructions">
+        </app-job-in-progress>
+      </div>
+
+      <div class="col">
+        <app-finish-jobs *ngIf="!startedProcessInstructions">
+        </app-finish-jobs>
+
+      </div>
+    </div>
   </div>
-
-  <div class="row">
-    <div class="col" *ngIf="!this.insStatusService.isProgramFinish()">
-      <app-job-batch-in-progress-list *ngIf="!startedProcessInstructions">
-      </app-job-batch-in-progress-list>
-    </div>
-    <div class="col-4" *ngIf="!this.insStatusService.isProgramFinish()">
-      <app-job-in-progress *ngIf="!startedProcessInstructions">
-      </app-job-in-progress>
-    </div>
-
-    <div class="col">
-      <app-finish-jobs *ngIf="!startedProcessInstructions">
-      </app-finish-jobs>
-
-    </div>
-  </div>
-
 </div>

@@ -18,6 +18,7 @@ import { ProcessTimerComponent } from './components/process-instrucctions/proces
 import { JobBatchInProgressListComponent } from './components/job-batch-in-progress-list/job-batch-in-progress-list.component';
 import { FinishJobsComponent } from './components/finish-jobs/finish-jobs.component';
 import { JobInProgressComponent } from './components/job-in-progress/job-in-progress.component';
+import { JobsComponent } from './jobs/jobs.component';
 
 @NgModule({
   declarations: [
@@ -28,7 +29,8 @@ import { JobInProgressComponent } from './components/job-in-progress/job-in-prog
     ProcessTimerComponent,
     JobBatchInProgressListComponent,
     FinishJobsComponent,
-    JobInProgressComponent
+    JobInProgressComponent,
+    JobsComponent
   ],
   imports: [
     BrowserModule,

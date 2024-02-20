@@ -17,7 +17,7 @@ export class FinishJobsService {
     if (shift != undefined){
       return shift;
     }
-    return {TimeInProgress: 0, ElapsedTime: 0, EstimatedTime: 0, ID: "", Lote: 0, Ope: "", OpeResult: "0"}
+    return {timerRest: 0, TimeInProgress: 0, ElapsedTime: 0, EstimatedTime: 0, ID: "", Lote: 0, Ope: "", OpeResult: "0"}
   }
 
   getFinishJobs(): Job[]{

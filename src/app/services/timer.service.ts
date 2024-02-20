@@ -11,7 +11,7 @@ export class TimerService {
   stopTimer$ = this.stopTimerSubject.asObservable();
 
   startTimer() {
-    this.startTime = new Date().getTime();
+    this.startTime = Date.now(); // Reinicia el tiempo sin crear una nueva instancia de Date
     this.stopTimerSubject.next(false);
   }
 

@@ -6,4 +6,5 @@ export class Job {
   ID: string = ""
   Lote: number = 0;
   ElapsedTime: number = 0
+  timerRest: number= 0;
 }
