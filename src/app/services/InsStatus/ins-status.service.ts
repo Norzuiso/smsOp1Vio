@@ -28,10 +28,6 @@ export class InsStatusService {
     return this.status == "F" || this.terminatedProcess
   }
 
-  isProgramPaused(): boolean {
-    return this.status == "P"
-  }
-
 
   getStatus(): string {
     return this.status

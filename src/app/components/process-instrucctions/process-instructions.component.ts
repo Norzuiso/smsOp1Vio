@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {DataService} from "../../services/data.service";
 import {Job} from "../../classes/job";
 import {BatchInProgressService} from "../../services/batchInProgress/batch-in-progress.service";
+import {ProcessJobsService} from "../../services/process-jobs.service";
 
 @Component({
   selector: 'app-process-instrucctions',
@@ -14,7 +15,8 @@ export class ProcessInstructionsComponent implements OnInit {
   isTimeDone: boolean = false
 
   constructor(public dataService: DataService,
-              public batchInProgressService: BatchInProgressService) {
+              public batchInProgressService: BatchInProgressService,
+              ) {
     this.batchInProgressService.createBatchJobs(dataService.getQueue());
 
     this.LotesPendientes = this.instructionsGroups.length

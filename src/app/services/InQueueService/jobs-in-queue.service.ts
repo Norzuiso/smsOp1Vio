@@ -10,6 +10,7 @@ export class JobsInQueueService {
   private totalTime: number = 0
   private batchID: string = ""
 
+
   getBatchID():string{
     return this.batchID
   }
@@ -18,11 +19,18 @@ export class JobsInQueueService {
   }
 
   getTotalTime(): number{
+    this.totalTime = 0
+    for(let i of this.jobsInQueue){
+      if (i.timerRest == 0){
+        this.totalTime += i.EstimatedTime
+      }else{
+        this.totalTime += i.timerRest
+      }
+    }
     return this.totalTime
   }
 
   enqueue(job: Job): void {
-    this.totalTime += job.EstimatedTime - job.ElapsedTime
     this.jobsInQueue.push(job)
   }
 

@@ -1,28 +1,47 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, interval, Subscription } from 'rxjs';
 
 @Injectable({
   providedIn: 'root'
 })
 export class TimerService {
-  private startTime: number;
+  protected startTime: number = 0;
+  private timerSubscription: Subscription | null = null;
+  private paused: boolean = false;
 
   private stopTimerSubject = new BehaviorSubject<boolean>(false);
   stopTimer$ = this.stopTimerSubject.asObservable();
 
   startTimer() {
-    this.startTime = Date.now(); // Reinicia el tiempo sin crear una nueva instancia de Date
+    this.startTime = Date.now();
+    this.paused = false;
     this.stopTimerSubject.next(false);
+    this.startInterval();
   }
 
   stopTimer() {
     this.stopTimerSubject.next(true);
+    this.paused = true;
+
+    // Si hay una suscripción existente, la cancelamos
+    if (this.timerSubscription) {
+      this.timerSubscription.unsubscribe();
+      this.timerSubscription = null;
+    }
   }
-  constructor() {
-    this.startTime = new Date().getTime();
+
+  private startInterval() {
+    if (!this.paused) {
+      this.timerSubscription = interval(1000).subscribe(() => {
+        if (this.stopTimerSubject.value) {
+          this.timerSubscription?.unsubscribe();
+          this.timerSubscription = null;
+        }
+      });
+    }
   }
-  getElapsedTime(): number{
-    const currentTime = new Date().getTime()
-    return currentTime - this.startTime
+  getElapsedTime(): number {
+    const currentTime = Date.now();
+    return currentTime - this.startTime;
   }
 }

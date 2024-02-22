@@ -28,16 +28,26 @@ export class ProcessJobsService {
   }
 
   jobInProgress: Job = new Job()
+  jobs: Job[] = [];
 
   async startProcess() {
     this.jobsInQueue.setQueue(this.batchInProgressService.getBatchInProgress())
-    let jobs: Job[] = this.jobsInQueue.getQueue();
 
-    for (let job of jobs) {
+    this.jobs = this.jobsInQueue.getQueue();
+
+    for (let job of this.jobs) {
       this.jobInProgress = job
       this.jobsInQueue.dequeue()
+      window.addEventListener('keydown', this.handleKeyDown.bind(this));
+
       await this.iniciarContador()
-      this.finishJobs.enqueue(job)
+      if (this.insStatusService.getStatus() != "E") {
+        this.finishJobs.enqueue(job)
+      }else{
+        this.jobsInQueue.enqueue(this.jobInProgress)
+        this.jobs.push(this.jobInProgress)
+        this.insStatusService.setStatus("C")
+      }
     }
     if (this.batchInProgressService.getJobsBatch().length != 0) {
       await this.startProcess()
@@ -51,33 +61,21 @@ export class ProcessJobsService {
 
   private iniciarContador(): Promise<void> {
     return new Promise<void>((resolve) => {
-      let contador = 0;
+      let contador = this.jobInProgress.TimeInProgress;
       const contadorInterval = setInterval(() => {
         if (this.insStatusService.getStatus() == "E") {
-          this.jobsInQueue.enqueue(this.jobInProgress);
-          this.jobInProgress = {
-            ElapsedTime: 0,
-            EstimatedTime: 0,
-            ID: "",
-            Lote: 0,
-            Ope: "",
-            OpeResult: "",
-            TimeInProgress: 0,
-            timerRest: 0
-          }
-
-          clearInterval(contadorInterval);
+          clearInterval(contadorInterval)
           resolve()
-        }
-        if (this.insStatusService.getStatus() == "W") {
+        }else if (this.insStatusService.getStatus() == "W") {
           this.jobInProgress.OpeResult = "Error"
-          clearInterval(contadorInterval);
-          resolve()
           this.insStatusService.setStatus("C")
+          clearInterval(contadorInterval)
+          resolve()
         } else if (this.insStatusService.getStatus() != "P") { // Verificar si no está en pausa
           contador++;
           this.jobInProgress.TimeInProgress = contador
           this.jobInProgress.timerRest = this.jobInProgress.EstimatedTime - this.jobInProgress.TimeInProgress
+
           if (contador >= this.jobInProgress.EstimatedTime) {
             clearInterval(contadorInterval);
             resolve()
@@ -86,12 +84,11 @@ export class ProcessJobsService {
       }, 1000);
 
       // Agregar listener para el evento de tecla presionada
-      window.addEventListener('keydown', this.handleKeyDown.bind(this, contadorInterval));
     });
   }
 
   // Método para manejar el evento de tecla presionada
-  private handleKeyDown(contadorInterval: NodeJS.Timeout, event: KeyboardEvent): void {
+  private handleKeyDown(event: KeyboardEvent): void {
     let key = event.key.toUpperCase();
     switch (key) {
       case 'P':
@@ -99,13 +96,19 @@ export class ProcessJobsService {
           break
         }
         this.timerService.stopTimer()
-        console.log("Esta aquí")
         this.insStatusService.status = key
 
         break;
       case 'C':
-        this.timerService.startTimer()
-        this.insStatusService.status = key
+        if (this.insStatusService.getStatus() == 'P') {
+          this.timerService.startTimer();
+          this.insStatusService.status = key;
+        }
+        break;
+      case 'E':
+        if (this.insStatusService.status != "P") {
+          this.insStatusService.status = "E"
+        }
         break;
       case 'W':
         if (this.insStatusService.status != "P") {
@@ -115,23 +118,4 @@ export class ProcessJobsService {
       // Puedes agregar más casos según sea necesario para otras teclas
     }
   }
-
-
-  private asd(contadorInterval: NodeJS.Timeout, event: KeyboardEvent): void {
-    if (!this.insStatusService.isProgramFinish()) {
-
-      let key = event.key.toUpperCase();
-      if (key == "P") {
-        this.timerService.stopTimer()
-      }
-      if (key == "C" && this.insStatusService.status == "P") {
-        this.timerService.startTimer()
-
-      }
-      this.insStatusService.status = key
-    }
-
-  }
-
-
 }

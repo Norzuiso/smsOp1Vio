@@ -6,7 +6,7 @@
   </div>
   <div class="row">
     <div class="col">
-      <span class="h3">Tiempo restante: {{ this.jobInQueue.getTotalTime() }}</span>
+      <span class="h3">Tiempo restante: {{ this.jobInQueue.getTotalTime() + jobInProgress.jobInProgress.timerRest }}</span>
     </div>
   </div>
 </div>
@@ -23,7 +23,7 @@
   <tr *ngFor="let job of this.jobInQueue.getQueue()">
     <td>{{ job.ID }}</td>
     <td>{{ job.EstimatedTime }}</td>
-    <td>{{ job.ElapsedTime }}</td>
+    <td>{{ job.TimeInProgress }}</td>
   </tr>
   </tbody>
 </table>

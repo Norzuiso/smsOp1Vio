@@ -10,8 +10,9 @@
   <tr>
     <th scope="col">Lote</th>
     <th scope="col">N. Programa</th>
-    <th scope="col">T.M</th>
-    <th scope="col">T.T</th>
+    <th scope="col">Operación</th>
+    <th scope="col">Resultado</th>
+    <th scope="col">Tiempo de ejecución</th>
   </tr>
   </thead>
   <tbody>
@@ -20,6 +21,12 @@
     <td>{{job.ID}}</td>
     <td>{{ job.Ope }}</td>
     <td>{{ job.OpeResult }}</td>
+    <td>{{ job.TimeInProgress}}</td>
   </tr>
   </tbody>
 </table>
+
+
+<div *ngIf="ins.getStatus()=='F'">
+  <span class="h3">Tiempo total de ejecución de procesos:{{calculateTotalTime()}} </span>
+</div>

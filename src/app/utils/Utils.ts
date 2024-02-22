@@ -28,6 +28,6 @@ export class Utils {
   }
 
   generateEstimatedTime() {
-    return this.generateRandomInt(1, 5);
+    return this.generateRandomInt(5, 19);
   }
 }
